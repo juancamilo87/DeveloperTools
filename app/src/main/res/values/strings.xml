@@ -1,11 +1,30 @@
 <resources>
     <string name="app_name">Developer tools</string>
-    <string name="display_tools_button">Display tools</string>
-    <string name="screen_always_on">Screen always on</string>
-    <string name="screen_always_on_off">Turn off</string>
-    <string name="display_tools_notification_title">Display tools</string>
-    <string name="screen_always_on_notification_text">Screen is always on</string>
 
+    <!-- START -> DISPLAY TOOLS -->
+    <string name="display_tools_button">Display tools</string>
+    <string name="display_tools_notification_title">Display tools</string>
+    <!-- START -> SCREEN ALWAYS ON -->
+
+
+    <string name="screen_always_on">Screen always on</string>
+    <string name="screen_always_on_allow_dimming">Allow dimming</string>
+    <string name="screen_always_on_stop_when_low_battery">Stop when low battery</string>
+    <string name="screen_always_on_paused_battery_low">Screen always on paused due to low battery</string>
+    <string name="screen_always_on_action_turn_off">Turn off</string>
+    <string name="screen_always_on_notification_text">Screen always on</string>
+    <string name="screen_always_on_notification_text_paused">Screen always on paused due to low battery</string>
+    <string name="screen_always_on_notification_text_allow_dimming_on">Dimming allowed</string>
+    <string name="screen_always_on_notification_text_allow_dimming_off">Dimming blocked</string>
+    <string name="screen_always_on_notification_text_battery_saver_on">Battery saver on</string>
+    <string name="screen_always_on_notification_text_battery_saver_off">Battery saver off</string>
+    <string name="screen_always_on_action_allow_dimming">Allow dim</string>
+    <string name="screen_always_on_action_block_dimming">Block dim</string>
+    <string name="screen_always_on_action_battery_saver_on">Battery saver on</string>
+    <string name="screen_always_on_action_battery_saver_off">Battery saver off</string>
+
+    <!-- END -> SCREEN ALWAYS ON -->
+    <!-- END -> DISPLAY TOOLS -->
 
     <string name="on_going_channel_name">Permanent notifications</string>
     <string name="on_going_channel_description">This notifications stay until manually removed</string>

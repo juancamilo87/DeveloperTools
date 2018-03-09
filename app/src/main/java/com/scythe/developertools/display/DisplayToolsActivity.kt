@@ -9,27 +9,84 @@ import kotlinx.android.synthetic.main.activity_display_tools.*
 import android.content.ComponentName
 import android.os.IBinder
 import android.content.ServiceConnection
+import android.view.View
 import com.scythe.developertools.LocalBinder
 
 
 class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAlwaysOnServiceListener {
 
-    lateinit var screenAlwaysOnService : ScreenAlwaysOnService
-    var screenAlwaysOnServiceBound : Boolean = false
+    companion object {
+        const val SCREEN_ON_PREFERENCES : String = "SCREEN_ON_PREFERENCES"
+        const val ALLOW_DIMMING : String = "ALLOW_DIMMING"
+        const val STOP_WHEN_BATTERY_LOW : String = "STOP_WHEN_BATTERY_LOW"
+    }
+
+    private lateinit var screenAlwaysOnService : ScreenAlwaysOnService
+    private var screenAlwaysOnServiceBound : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_tools)
+        initDefaults()
         screen_always_on_toggle.setOnCheckedChangeListener { _, isOn ->
             if (isOn) {
+                val screenAlwaysOnServiceIntent =
+                        Intent(this, ScreenAlwaysOnService::class.java)
+                screenAlwaysOnServiceIntent.putExtra(ScreenAlwaysOnService.ALLOW_DIMMING_TOGGLE,
+                        allow_dimming_switch.isChecked)
+                screenAlwaysOnServiceIntent.putExtra(
+                        ScreenAlwaysOnService.STOP_WHEN_BATTERY_LOW_TOGGLE,
+                        battery_switch.isChecked)
+
                 startForegroundService(
-                        Intent(this, ScreenAlwaysOnService::class.java))
+                        screenAlwaysOnServiceIntent)
                 bindToService()
             } else {
                 stopService(Intent(this, ScreenAlwaysOnService::class.java))
                 unbindFromService()
             }
         }
+        allow_dimming_switch.setOnCheckedChangeListener { _, _ ->
+            notifyScreenAlwaysOnServiceOfConfigurationChange()
+        }
+
+        battery_switch.setOnCheckedChangeListener { _, _ ->
+            notifyScreenAlwaysOnServiceOfConfigurationChange()
+        }
+    }
+
+    private fun initDefaults() {
+        val screenOnPrefs = getSharedPreferences(SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
+        allow_dimming_switch.isChecked = screenOnPrefs.getBoolean(ALLOW_DIMMING, false)
+        battery_switch.isChecked = screenOnPrefs.getBoolean(STOP_WHEN_BATTERY_LOW, false)
+    }
+
+    override fun screenAlwaysOnStateChanged(state: Boolean, allowDimming: Boolean,
+                                            stopWhenBatteryLow: Boolean, paused: Boolean) {
+        screen_always_on_toggle.isChecked = state
+        allow_dimming_switch.isChecked = allowDimming
+        battery_switch.isChecked = stopWhenBatteryLow
+        screen_always_on_paused.visibility = if(paused) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun notifyScreenAlwaysOnServiceOfConfigurationChange() {
+        saveSettingsToSharedPreferences()
+        if (screenAlwaysOnServiceBound) {
+            screenAlwaysOnService.configurationChanges(allow_dimming_switch.isChecked,
+                    battery_switch.isChecked)
+        }
+    }
+
+    private fun saveSettingsToSharedPreferences() {
+        val screenOnPrefs = getSharedPreferences(SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
+        val editor = screenOnPrefs.edit()
+        editor.putBoolean(ALLOW_DIMMING, allow_dimming_switch.isChecked)
+        editor.putBoolean(STOP_WHEN_BATTERY_LOW, battery_switch.isChecked)
+        editor.apply()
     }
 
     override fun onStart() {
@@ -74,9 +131,5 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
         override fun onServiceDisconnected(arg0: ComponentName) {
             screenAlwaysOnServiceBound = false
         }
-    }
-
-    override fun screenAlwaysOnStateChanged(state: Boolean) {
-        screen_always_on_toggle.isChecked = state
     }
 }
