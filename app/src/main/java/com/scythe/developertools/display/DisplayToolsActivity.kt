@@ -1,29 +1,24 @@
 package com.scythe.developertools.display
 
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.scythe.developertools.R
 import kotlinx.android.synthetic.main.activity_display_tools.*
-import android.content.ComponentName
-import android.os.IBinder
-import android.content.ServiceConnection
 import android.view.View
-import com.scythe.developertools.LocalBinder
 
-
-class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAlwaysOnServiceListener {
+class DisplayToolsActivity : AppCompatActivity() {
 
     companion object {
         const val SCREEN_ON_PREFERENCES : String = "SCREEN_ON_PREFERENCES"
         const val ALLOW_DIMMING : String = "ALLOW_DIMMING"
         const val STOP_WHEN_BATTERY_LOW : String = "STOP_WHEN_BATTERY_LOW"
         const val SCREEN_ALWAYS_ON : String = "SCREEN_ALWAYS_ON"
+        const val ACTION_SCREEN_ALWAYS_ON_CONFIGURATION_CHANGE : String =
+                "ACTION_SCREEN_ALWAYS_ON_CONFIGURATION_CHANGE"
     }
 
-    private lateinit var screenAlwaysOnService : ScreenAlwaysOnService
-    private var screenAlwaysOnServiceBound : Boolean = false
+    private val receiver: ScreenAlwaysOnConfigurationChange = ScreenAlwaysOnConfigurationChange()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +36,8 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
 
                 startForegroundService(
                         screenAlwaysOnServiceIntent)
-                bindToService()
             } else {
                 stopService(Intent(this, ScreenAlwaysOnService::class.java))
-                unbindFromService()
             }
         }
         allow_dimming_switch.setOnCheckedChangeListener { _, _ ->
@@ -63,7 +56,7 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
         screen_always_on_toggle.isChecked = screenOnPrefs.getBoolean(SCREEN_ALWAYS_ON, false)
     }
 
-    override fun screenAlwaysOnStateChanged(state: Boolean, allowDimming: Boolean,
+    fun screenAlwaysOnStateChanged(state: Boolean, allowDimming: Boolean,
                                             stopWhenBatteryLow: Boolean, paused: Boolean) {
         screen_always_on_toggle.isChecked = state
         allow_dimming_switch.isChecked = allowDimming
@@ -77,10 +70,7 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
 
     private fun notifyScreenAlwaysOnServiceOfConfigurationChange() {
         saveSettingsToSharedPreferences()
-        if (screenAlwaysOnServiceBound) {
-            screenAlwaysOnService.configurationChanges(allow_dimming_switch.isChecked,
-                    battery_switch.isChecked)
-        }
+        sendBroadcast(Intent(DisplayToolsActivity.ACTION_SCREEN_ALWAYS_ON_CONFIGURATION_CHANGE))
     }
 
     private fun saveSettingsToSharedPreferences() {
@@ -91,45 +81,23 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
         editor.apply()
     }
 
-    override fun onStart() {
-        super.onStart()
-        bindToService()
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(receiver,
+                IntentFilter(ScreenAlwaysOnService.ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE))
     }
 
-    override fun onStop() {
-        super.onStop()
-        unbindFromService()
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(receiver)
     }
 
-    private fun bindToService() {
-        if (!screenAlwaysOnServiceBound) {
-            val intent = Intent(this, ScreenAlwaysOnService::class.java)
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
-        }
-    }
-
-    private fun unbindFromService() {
-        if (screenAlwaysOnServiceBound) {
-            screenAlwaysOnService.unregisterListener(this)
-            unbindService(mConnection)
-            screenAlwaysOnServiceBound = false
-        }
-    }
-
-    /** Defines callbacks for service binding, passed to bindService()  */
-    private val mConnection = object : ServiceConnection {
-
-        override fun onServiceConnected(className: ComponentName,
-                                        service: IBinder) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            val binder = service as LocalBinder<*>
-            screenAlwaysOnService = binder.getService() as ScreenAlwaysOnService
-            screenAlwaysOnService.registerListener(this@DisplayToolsActivity)
-            screenAlwaysOnServiceBound = true
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            screenAlwaysOnServiceBound = false
+    inner class ScreenAlwaysOnConfigurationChange: BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            screenAlwaysOnStateChanged(p1?.getBooleanExtra(ScreenAlwaysOnService.RUNNING, false) ?: false,
+                    p1?.getBooleanExtra(ALLOW_DIMMING, false) ?: false,
+                    p1?.getBooleanExtra(STOP_WHEN_BATTERY_LOW, false) ?: false,
+                    p1?.getBooleanExtra(ScreenAlwaysOnService.PAUSED, false) ?: false)
         }
     }
 }

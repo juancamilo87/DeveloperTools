@@ -24,6 +24,11 @@
     <string name="screen_always_on_action_battery_saver_off">Battery saver off</string>
 
     <!-- END -> SCREEN ALWAYS ON -->
+
+    <!-- START -> SCREEN ALWAYS ON TILE -->
+    <string name="display_screen_always_on_tile_label_on">Screen always on</string>
+    <string name="display_screen_always_on_tile_label_off">Screen always off</string>
+    <!-- END -> SCREEN ALWAYS ON TILE -->
     <!-- END -> DISPLAY TOOLS -->
 
     <string name="on_going_channel_name">Permanent notifications</string>

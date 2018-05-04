@@ -1,10 +1,7 @@
 package com.scythe.developertools.display
 
 import android.app.*
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.graphics.drawable.Icon
 import android.os.Binder
 import android.os.IBinder
@@ -13,6 +10,7 @@ import android.os.PowerManager
 import com.scythe.developertools.LocalBinder
 import com.scythe.developertools.R
 import android.os.BatteryManager
+import android.service.quicksettings.TileService
 
 
 class ScreenAlwaysOnService : Service() {
@@ -22,6 +20,10 @@ class ScreenAlwaysOnService : Service() {
         const val ALLOW_DIMMING_TOGGLE : String = "ALLOW_DIMMING_TOGGLE"
         const val STOP_WHEN_BATTERY_LOW_TOGGLE : String = "STOP_WHEN_BATTERY_LOW_TOGGLE"
         const val TURN_OFF_ACTION : String = "TURN_OFF"
+        const val PAUSED : String = "SCREEN_ALWAYS_ON_SERVICE_PAUSED"
+        const val RUNNING : String = "SCREEN_ALWAYS_ON_SERVICE_RUNNING"
+        const val ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE : String =
+                "ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE"
     }
 
     private val notificationId : Int = 204
@@ -30,21 +32,22 @@ class ScreenAlwaysOnService : Service() {
 
     private lateinit var wakeLock : PowerManager.WakeLock
 
-    private var listeners : ArrayList<ScreenAlwaysOnServiceListener> = ArrayList()
-
     private var allowDimming: Boolean = false
     private var stopWhenBatteryLow: Boolean = false
 
     private var paused : Boolean = false
-
+    private val receiver: ConfigurationChangeReceiver = ConfigurationChangeReceiver()
 
     override fun onCreate() {
         super.onCreate()
+        stopRunning()
         val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES,
                 Context.MODE_PRIVATE)
         allowDimming = screenOnPrefs.getBoolean(DisplayToolsActivity.ALLOW_DIMMING, false)
         stopWhenBatteryLow = screenOnPrefs.getBoolean(DisplayToolsActivity.STOP_WHEN_BATTERY_LOW,
                 false)
+        registerReceiver(receiver,
+                IntentFilter(DisplayToolsActivity.ACTION_SCREEN_ALWAYS_ON_CONFIGURATION_CHANGE))
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -58,12 +61,12 @@ class ScreenAlwaysOnService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when(intent?.action) {
             TURN_OFF_ACTION -> {
-                running = false
+                stopRunning()
                 if(!paused) {
                     releaseWakelock()
                 }
                 paused = false
-                notifyListeners()
+                notifyOfChanges()
                 stopForeground(true)
                 stopSelf()
             }
@@ -74,9 +77,12 @@ class ScreenAlwaysOnService : Service() {
                 configurationChanges(stopWhenBatteryLow = !stopWhenBatteryLow)
             }
             else -> {
-                configurationChanges(intent?.getBooleanExtra(ALLOW_DIMMING_TOGGLE, false) ?: false,
-                        intent?.getBooleanExtra(STOP_WHEN_BATTERY_LOW_TOGGLE, false) ?: false)
-                running = true
+                configurationChanges(intent?.getBooleanExtra(ALLOW_DIMMING_TOGGLE,
+                        getDimmingFromSharedPreferences()) ?: getDimmingFromSharedPreferences(),
+                        intent?.getBooleanExtra(STOP_WHEN_BATTERY_LOW_TOGGLE,
+                                getBatterySettingFromSharedPreferences()) ?:
+                        getBatterySettingFromSharedPreferences())
+                startRunning()
                 paused = false
                 createNotificationChannels()
                 startService()
@@ -86,11 +92,14 @@ class ScreenAlwaysOnService : Service() {
         return START_STICKY
     }
 
-    private fun notifyListeners() {
+    private fun notifyOfChanges() {
         saveSettingsToSharedPreferences()
-        for(listener in ArrayList(listeners)) {
-            listener.screenAlwaysOnStateChanged(running, allowDimming, stopWhenBatteryLow, paused)
-        }
+        val broadcastIntent = Intent(ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE)
+        broadcastIntent.putExtra(RUNNING, running)
+        broadcastIntent.putExtra(DisplayToolsActivity.ALLOW_DIMMING, allowDimming)
+        broadcastIntent.putExtra(DisplayToolsActivity.STOP_WHEN_BATTERY_LOW, stopWhenBatteryLow)
+        broadcastIntent.putExtra(PAUSED, paused)
+        sendBroadcast(broadcastIntent)
     }
 
     private fun saveSettingsToSharedPreferences() {
@@ -99,6 +108,16 @@ class ScreenAlwaysOnService : Service() {
         editor.putBoolean(DisplayToolsActivity.ALLOW_DIMMING, allowDimming)
         editor.putBoolean(DisplayToolsActivity.STOP_WHEN_BATTERY_LOW, stopWhenBatteryLow)
         editor.apply()
+    }
+
+    private fun getDimmingFromSharedPreferences() : Boolean {
+        val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
+        return screenOnPrefs.getBoolean(DisplayToolsActivity.ALLOW_DIMMING, false)
+    }
+
+    private fun getBatterySettingFromSharedPreferences() : Boolean {
+        val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
+        return screenOnPrefs.getBoolean(DisplayToolsActivity.STOP_WHEN_BATTERY_LOW, false)
     }
 
     private fun makeServiceForeground() {
@@ -189,9 +208,9 @@ class ScreenAlwaysOnService : Service() {
         startForeground(notificationId, notification)
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(receiver)
         stopForeground(true)
         try {
             unregisterReceiver(batteryLevelReceiver)
@@ -199,18 +218,9 @@ class ScreenAlwaysOnService : Service() {
             // TODO("This should be removed")
         }
         releaseWakelock()
-        running = false
+        stopRunning()
+        notifyOfChanges()
     }
-
-    fun registerListener(listener : ScreenAlwaysOnServiceListener) {
-        listeners.add(listener)
-        listener.screenAlwaysOnStateChanged(running, allowDimming, stopWhenBatteryLow, paused)
-    }
-
-    fun unregisterListener(listener : ScreenAlwaysOnServiceListener) {
-        listeners.remove(listener)
-    }
-
     fun configurationChanges(allowDimming : Boolean = this.allowDimming,
                              stopWhenBatteryLow: Boolean = this.stopWhenBatteryLow) {
         val batteryReceiverChangePending = this.stopWhenBatteryLow != stopWhenBatteryLow
@@ -222,7 +232,7 @@ class ScreenAlwaysOnService : Service() {
             updateBatteryReceiver()
         }
         if (restartPending) {
-            notifyListeners()
+            notifyOfChanges()
             restartService()
         }
     }
@@ -262,7 +272,7 @@ class ScreenAlwaysOnService : Service() {
         }
         acquireWakelock()
         makeServiceForeground()
-        notifyListeners()
+        notifyOfChanges()
     }
 
     private fun postStartService() {
@@ -305,6 +315,20 @@ class ScreenAlwaysOnService : Service() {
         }
     }
 
+    private fun startRunning() {
+        running = true
+        TileService.requestListeningState(this,
+                ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
+        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
+    }
+
+    private fun stopRunning() {
+        running = false
+        TileService.requestListeningState(this,
+                ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
+        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
+    }
+
     private fun acquireWakelock() {
         wakeLock.acquire()
         val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
@@ -325,12 +349,6 @@ class ScreenAlwaysOnService : Service() {
             editor.putBoolean(DisplayToolsActivity.SCREEN_ALWAYS_ON, false)
             editor.apply()
         }
-    }
-
-
-    interface ScreenAlwaysOnServiceListener {
-        fun screenAlwaysOnStateChanged(state : Boolean, allowDimming: Boolean,
-                                       stopWhenBatteryLow: Boolean, paused: Boolean)
     }
 
     //TODO Move this code to a generic place
@@ -356,6 +374,14 @@ class ScreenAlwaysOnService : Service() {
                 Intent.ACTION_BATTERY_LOW -> batteryStateLow()
                 Intent.ACTION_BATTERY_OKAY -> batteryStateOkay()
             }
+        }
+
+    }
+
+    inner class ConfigurationChangeReceiver: BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            configurationChanges(getDimmingFromSharedPreferences(),
+                    getBatterySettingFromSharedPreferences())
         }
 
     }

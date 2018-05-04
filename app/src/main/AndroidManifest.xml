@@ -25,6 +25,24 @@
             android:name=".display.ScreenAlwaysOnService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <service
+            android:name=".display.ScreenAlwaysOnQSTileService"
+            android:icon="@drawable/display_screen_always_on_tile_icon"
+            android:label="@string/display_screen_always_on_tile_label_off"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <meta-data android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".QSTileLongPressReceiverActivity">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
