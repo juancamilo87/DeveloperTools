@@ -19,6 +19,7 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
         const val SCREEN_ON_PREFERENCES : String = "SCREEN_ON_PREFERENCES"
         const val ALLOW_DIMMING : String = "ALLOW_DIMMING"
         const val STOP_WHEN_BATTERY_LOW : String = "STOP_WHEN_BATTERY_LOW"
+        const val SCREEN_ALWAYS_ON : String = "SCREEN_ALWAYS_ON"
     }
 
     private lateinit var screenAlwaysOnService : ScreenAlwaysOnService
@@ -59,6 +60,7 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
         val screenOnPrefs = getSharedPreferences(SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
         allow_dimming_switch.isChecked = screenOnPrefs.getBoolean(ALLOW_DIMMING, false)
         battery_switch.isChecked = screenOnPrefs.getBoolean(STOP_WHEN_BATTERY_LOW, false)
+        screen_always_on_toggle.isChecked = screenOnPrefs.getBoolean(SCREEN_ALWAYS_ON, false)
     }
 
     override fun screenAlwaysOnStateChanged(state: Boolean, allowDimming: Boolean,
@@ -100,9 +102,7 @@ class DisplayToolsActivity : AppCompatActivity(), ScreenAlwaysOnService.ScreenAl
     }
 
     private fun bindToService() {
-        if (screenAlwaysOnServiceBound) {
-            screenAlwaysOnService.registerListener(this)
-        } else {
+        if (!screenAlwaysOnServiceBound) {
             val intent = Intent(this, ScreenAlwaysOnService::class.java)
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
         }

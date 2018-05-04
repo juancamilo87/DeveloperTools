@@ -60,7 +60,7 @@ class ScreenAlwaysOnService : Service() {
             TURN_OFF_ACTION -> {
                 running = false
                 if(!paused) {
-                    wakeLock.release()
+                    releaseWakelock()
                 }
                 paused = false
                 notifyListeners()
@@ -198,6 +198,7 @@ class ScreenAlwaysOnService : Service() {
         } catch (e: Exception) {
             // TODO("This should be removed")
         }
+        releaseWakelock()
         running = false
     }
 
@@ -237,7 +238,7 @@ class ScreenAlwaysOnService : Service() {
     private fun batteryStateLow() {
         if (running) {
             if(!paused) {
-                wakeLock.release()
+                releaseWakelock(paused)
             }
             paused = true
             makeServiceForeground()
@@ -259,7 +260,7 @@ class ScreenAlwaysOnService : Service() {
         } else {
             pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "Screen always on")
         }
-        wakeLock.acquire()
+        acquireWakelock()
         makeServiceForeground()
         notifyListeners()
     }
@@ -298,9 +299,31 @@ class ScreenAlwaysOnService : Service() {
     private fun restartService(paused : Boolean = this.paused) {
         if (running) {
             if (!paused) {
-                wakeLock.release()
+                releaseWakelock()
             }
             startService()
+        }
+    }
+
+    private fun acquireWakelock() {
+        wakeLock.acquire()
+        val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
+        val editor = screenOnPrefs.edit()
+        editor.putBoolean(DisplayToolsActivity.SCREEN_ALWAYS_ON, true)
+        editor.apply()
+    }
+
+    private fun releaseWakelock(paused: Boolean = false) {
+        try {
+            wakeLock.release()
+        } catch(e: Exception) {
+
+        }
+        if (!paused) {
+            val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
+            val editor = screenOnPrefs.edit()
+            editor.putBoolean(DisplayToolsActivity.SCREEN_ALWAYS_ON, false)
+            editor.apply()
         }
     }
 

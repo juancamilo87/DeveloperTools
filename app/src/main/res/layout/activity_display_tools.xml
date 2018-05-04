@@ -39,7 +39,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/battery_switch" />
+            app:layout_constraintTop_toBottomOf="@+id/battery_switch"
+            android:saveEnabled="false" />
 
         <Switch
             android:id="@+id/allow_dimming_switch"
@@ -51,7 +52,8 @@
             android:text="@string/screen_always_on_allow_dimming"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            android:saveEnabled="false" />
 
         <Switch
             android:id="@+id/battery_switch"
@@ -63,7 +65,8 @@
             android:text="@string/screen_always_on_stop_when_low_battery"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/allow_dimming_switch" />
+            app:layout_constraintTop_toBottomOf="@+id/allow_dimming_switch"
+            android:saveEnabled="false" />
 
         <TextView
             android:id="@+id/screen_always_on_paused"
