@@ -319,14 +319,13 @@ class ScreenAlwaysOnService : Service() {
         running = true
         TileService.requestListeningState(this,
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
-        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
+//        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
     }
 
     private fun stopRunning() {
         running = false
         TileService.requestListeningState(this,
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
-        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
     }
 
     private fun acquireWakelock() {

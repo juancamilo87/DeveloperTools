@@ -1,9 +1,7 @@
 package com.scythe.developertools.display
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
+import android.os.IBinder
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import com.scythe.developertools.R
@@ -13,11 +11,12 @@ import com.scythe.developertools.R
  */
 class ScreenAlwaysOnQSTileService: TileService() {
 
-    companion object {
-        const val ACTION_UPDATE_TILE : String = "ACTION_UPDATE_TILE"
-    }
 
-    private val receiver: UpdateTileReceiver = UpdateTileReceiver()
+    override fun onBind(intent: Intent?): IBinder {
+        TileService.requestListeningState(this,
+                ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
+        return super.onBind(intent)
+    }
 
     override fun onTileAdded() {
         super.onTileAdded()
@@ -42,14 +41,8 @@ class ScreenAlwaysOnQSTileService: TileService() {
     }
 
     override fun onStartListening() {
-        registerReceiver(receiver, IntentFilter(ACTION_UPDATE_TILE))
         super.onStartListening()
         updateTile()
-    }
-
-    override fun onStopListening() {
-        unregisterReceiver(receiver)
-        super.onStopListening()
     }
 
     private fun updateTile() {
@@ -63,11 +56,5 @@ class ScreenAlwaysOnQSTileService: TileService() {
             qsTile.label = getString(R.string.display_screen_always_on_tile_label_off)
         }
         qsTile.updateTile()
-    }
-
-    inner class UpdateTileReceiver: BroadcastReceiver() {
-        override fun onReceive(p0: Context?, p1: Intent?) {
-            updateTile()
-        }
     }
 }
