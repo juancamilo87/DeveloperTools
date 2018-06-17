@@ -36,10 +36,16 @@
     <!-- START -> FILL MEMORY -->
     <string name="fill_memory">Fill memory</string>
     <string name="fill_memory_description">This can be used to test your app when the system kills it in the background.</string>
+    <string name="filling_memory">We are filling the memory. Please wait for a while.</string>
     <string name="start_filling_memory">Start</string>
-    <string name="running_filling_memory">Running...</string>
+    <string name="stop_filling_memory">Stop</string>
     <string name="successfully_filled_the_memory">Successfully filled the memory</string>
-    <string name="failed_to_fill_the_memory">Failed to fill the memory. Try running it again. In the future the number of activities to start will be modifiable.</string>
+    <string name="failed_to_fill_the_memory">Failed to fill the memory. Try running it again for a longer time or until it is successful.</string>
+    <string name="free_memory">Free memory</string>
+    <string name="free_memory_percentage">Free memory percentage</string>
+    <string name="memory_low">The memory is low. The system will start killing services.</string>
+    <string name="concurrent_services">Concurrent services running</string>
+    <string name="concurrent_services_ran">Concurrent services ran</string>
     <!-- END -> FILL MEMORY -->
     <!-- END -> MEMORY TOOLS -->
 

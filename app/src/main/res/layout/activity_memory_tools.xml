@@ -41,48 +41,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/start_filling_memory_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-        <TextView
-            android:id="@+id/successful_result"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/successfully_filled_the_memory"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/start_filling_memory_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-        <TextView
-            android:id="@+id/failed_result"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/failed_to_fill_the_memory"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/colorError"
-            android:visibility="gone"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/start_filling_memory_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
         <Button
             android:id="@+id/start_filling_memory_button"
             android:layout_width="wrap_content"
@@ -95,7 +53,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/successful_result" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     </android.support.constraint.ConstraintLayout>
 
