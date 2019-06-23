@@ -1,6 +1,7 @@
 package com.scythe.developertools.display
 
 import android.content.*
+import android.graphics.drawable.Icon
 import android.os.IBinder
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
@@ -30,12 +31,10 @@ class ScreenAlwaysOnQSTileService: TileService() {
                     Intent(this, ScreenAlwaysOnService::class.java)
             startForegroundService(
                     screenAlwaysOnServiceIntent)
-            qsTile.state = Tile.STATE_ACTIVE
-            qsTile.label = getString(R.string.display_screen_always_on_tile_label_on)
+            switchOn()
         } else {
             stopService(Intent(this, ScreenAlwaysOnService::class.java))
-            qsTile.state = Tile.STATE_INACTIVE
-            qsTile.label = getString(R.string.display_screen_always_on_tile_label_off)
+            switchOff()
         }
         qsTile.updateTile()
     }
@@ -49,12 +48,22 @@ class ScreenAlwaysOnQSTileService: TileService() {
         val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES,
                 Context.MODE_PRIVATE)
         if (screenOnPrefs.getBoolean(DisplayToolsActivity.SCREEN_ALWAYS_ON, false)) {
-            qsTile.state = Tile.STATE_ACTIVE
-            qsTile.label = getString(R.string.display_screen_always_on_tile_label_on)
+            switchOn()
         } else {
-            qsTile.state = Tile.STATE_INACTIVE
-            qsTile.label = getString(R.string.display_screen_always_on_tile_label_off)
+            switchOff()
         }
         qsTile.updateTile()
+    }
+
+    private fun switchOn() {
+        qsTile.state = Tile.STATE_ACTIVE
+        qsTile.label = getString(R.string.display_screen_always_on_tile_label_on)
+        qsTile.icon = Icon.createWithResource(this, R.drawable.ic_android_bulb_on)
+    }
+
+    private fun switchOff() {
+        qsTile.state = Tile.STATE_INACTIVE
+        qsTile.label = getString(R.string.display_screen_always_on_tile_label_off)
+        qsTile.icon = Icon.createWithResource(this, R.drawable.ic_android_bulb_off)
     }
 }

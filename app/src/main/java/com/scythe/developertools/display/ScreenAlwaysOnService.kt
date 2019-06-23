@@ -176,24 +176,23 @@ class ScreenAlwaysOnService : Service() {
                 CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(mainText)
-                .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setSmallIcon(R.drawable.ic_bulb_on)
                 .setContentIntent(pendingIntent)
-                //TODO("Add proper icons")
                 .addAction(Notification.Action.Builder(
                         Icon.createWithResource(
-                                this, android.R.drawable.ic_lock_silent_mode_off),
+                                this, R.drawable.ic_bulb_off),
                         getString(R.string.screen_always_on_action_turn_off),
                         turnOffPendingIntent)
                         .build())
                 .addAction(Notification.Action.Builder(
                         Icon.createWithResource(
-                                this, android.R.drawable.ic_lock_silent_mode_off),
+                                this, R.drawable.ic_dim),
                         allowDimmingActionString,
                         allowDimmingPendingIntent)
                         .build())
                 .addAction(Notification.Action.Builder(
                         Icon.createWithResource(
-                                this, android.R.drawable.ic_lock_silent_mode_off),
+                                this, R.drawable.ic_low_battery),
                         stopWhenBatterLowActionString,
                         stopWhenBatteryLowPendingIntent)
                         .build())
@@ -215,7 +214,7 @@ class ScreenAlwaysOnService : Service() {
         try {
             unregisterReceiver(batteryLevelReceiver)
         } catch (e: Exception) {
-            // TODO("This should be removed")
+            //Do nothing
         }
         releaseWakelock()
         stopRunning()
@@ -266,9 +265,9 @@ class ScreenAlwaysOnService : Service() {
     private fun startService() {
         val pm = getSystemService(PowerManager::class.java)
         wakeLock = if (allowDimming) {
-            pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Screen always on")
+            pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, ":screenalwayson")
         } else {
-            pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "Screen always on")
+            pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, ":screenalwayson")
         }
         acquireWakelock()
         makeServiceForeground()
