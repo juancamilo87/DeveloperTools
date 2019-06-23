@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <drawable name="display_screen_always_on_tile_icon">@android:drawable/ic_dialog_alert</drawable>
+    <drawable name="display_screen_always_on_tile_icon">@drawable/ic_android_bulb_on</drawable>
 </resources>
