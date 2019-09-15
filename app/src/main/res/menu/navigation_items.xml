@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/displayNavFragment"
+        android:title="Display"
+        android:icon="@android:drawable/ic_lock_idle_low_battery" />
+    <item android:id="@+id/memoryNavFragment"
+        android:title="Memory"
+        android:icon="@android:drawable/ic_menu_agenda" />
+    <item android:id="@+id/action_deep_links"
+        android:title="Deep links"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:enabled="false"/>
+</menu>

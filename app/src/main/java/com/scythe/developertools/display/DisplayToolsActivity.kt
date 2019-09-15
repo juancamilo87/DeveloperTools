@@ -100,4 +100,9 @@ class DisplayToolsActivity : AppCompatActivity() {
                     p1?.getBooleanExtra(ScreenAlwaysOnService.PAUSED, false) ?: false)
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 }
