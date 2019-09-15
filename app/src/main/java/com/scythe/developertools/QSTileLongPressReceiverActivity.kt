@@ -5,7 +5,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.scythe.developertools.display.DisplayToolsActivity
 import com.scythe.developertools.display.ScreenAlwaysOnQSTileService
 
@@ -15,7 +15,7 @@ import com.scythe.developertools.display.ScreenAlwaysOnQSTileService
 class QSTileLongPressReceiverActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        when (intent.getParcelableExtra<ComponentName>(Intent.EXTRA_COMPONENT_NAME).className) {
+        when (intent.getParcelableExtra<ComponentName>(Intent.EXTRA_COMPONENT_NAME)?.className) {
             ScreenAlwaysOnQSTileService::class.java.name -> {
                 val stackBuilder = TaskStackBuilder.create(this)
                 stackBuilder.addNextIntent(Intent(this, MainActivity::class.java))

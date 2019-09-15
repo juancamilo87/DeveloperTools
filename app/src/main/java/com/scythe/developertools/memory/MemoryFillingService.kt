@@ -58,18 +58,18 @@ sealed class MemoryFillingService : Service() {
         serviceHandler = ServiceHandler(serviceLooper)
     }
 
-    inner class IncomingHandler : Handler() {
+    private class IncomingHandler(val memoryFillingService: MemoryFillingService) : Handler() {
         override fun handleMessage(msg: Message) {
             when(msg.what)  {
                 MSG_STOP -> {
-                    running = false
+                    memoryFillingService.running = false
                 }
             }
         }
     }
 
     private var running = false
-    private val messenger = Messenger(IncomingHandler())
+    private val messenger = Messenger(IncomingHandler(this))
     private val allocations = ArrayList<ByteArray>()
 
 

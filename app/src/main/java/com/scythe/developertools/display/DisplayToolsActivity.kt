@@ -1,7 +1,7 @@
 package com.scythe.developertools.display
 
 import android.content.*
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.scythe.developertools.R
 import kotlinx.android.synthetic.main.activity_display_tools.*
