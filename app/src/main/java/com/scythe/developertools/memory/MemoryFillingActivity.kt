@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.scythe.developertools.R
@@ -28,7 +28,7 @@ open class MemoryFillingActivity : AppCompatActivity() {
     private var update = false
     private var finished = false
 
-    private var services = mutableMapOf<Class<out Service>, Triple<Boolean, ServiceConnection?, Messenger?>>()
+    private var services = mutableMapOf<Class<out Service>, Triple<Boolean, ServiceConnection, Messenger?>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -247,8 +247,8 @@ open class MemoryFillingActivity : AppCompatActivity() {
     private val incomingMessenger = Messenger(IncomingHandler())
 
     inner class IncomingHandler : Handler() {
-        override fun handleMessage(msg: Message?) {
-            when(msg?.what) {
+        override fun handleMessage(msg: Message) {
+            when(msg.what) {
                 SEND_STATIC_VARIABLE -> {
                     if (msg.arg1 != 5) {
                         //Successfully cleared value

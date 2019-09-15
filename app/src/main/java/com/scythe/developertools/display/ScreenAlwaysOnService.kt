@@ -263,15 +263,16 @@ class ScreenAlwaysOnService : Service() {
     }
 
     private fun startService() {
-        val pm = getSystemService(PowerManager::class.java)
-        wakeLock = if (allowDimming) {
-            pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, ":screenalwayson")
-        } else {
-            pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, ":screenalwayson")
+        getSystemService(PowerManager::class.java)?.let { pm ->
+            wakeLock = if (allowDimming) {
+                pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, ":screenalwayson")
+            } else {
+                pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, ":screenalwayson")
+            }
+            acquireWakelock()
+            makeServiceForeground()
+            notifyOfChanges()
         }
-        acquireWakelock()
-        makeServiceForeground()
-        notifyOfChanges()
     }
 
     private fun postStartService() {
@@ -293,14 +294,15 @@ class ScreenAlwaysOnService : Service() {
 
     private fun checkBattery() {
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        val batteryStatus = registerReceiver(null, filter)
-        val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-        val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+        registerReceiver(null, filter)?.let { batteryStatus ->
+            val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
 
-        (level / scale.toFloat() * 100).let {
-            when {
-                it <= 15 -> batteryStateLow()
-                it >= 20 -> batteryStateOkay()
+            (level / scale.toFloat() * 100).let {
+                when {
+                    it <= 15 -> batteryStateLow()
+                    it >= 20 -> batteryStateOkay()
+                }
             }
         }
     }

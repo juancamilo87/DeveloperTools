@@ -1,7 +1,7 @@
 package com.scythe.developertools
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.scythe.developertools.display.DisplayToolsActivity
 import com.scythe.developertools.memory.MemoryToolsActivity
