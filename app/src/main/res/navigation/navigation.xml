@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@+id/displayNavFragment">
+    <fragment
+        android:id="@+id/displayNavFragment"
+        android:name="com.scythe.developertools.display.DisplayNavFragment"
+        tools:layout="@layout/fragment_display" >
+        <action
+            android:id="@+id/action_displayNavFragment_to_displayToolsActivity"
+            app:destination="@id/displayToolsActivity"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <activity
+        android:id="@+id/displayToolsActivity"
+        android:name="com.scythe.developertools.display.DisplayToolsActivity"
+        android:label="DisplayToolsActivity"
+        tools:layout="@layout/activity_display_tools"/>
+
+    <fragment
+        android:id="@+id/memoryNavFragment"
+        android:name="com.scythe.developertools.memory.MemoryNavFragment"
+        tools:layout="@layout/fragment_memory" >
+        <action
+            android:id="@+id/action_memoryNavFragment_to_memoryToolsActivity"
+            app:destination="@id/memoryToolsActivity"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <activity
+        android:id="@+id/memoryToolsActivity"
+        android:name="com.scythe.developertools.memory.MemoryToolsActivity"
+        android:label="MemoryToolsActivity"
+        tools:layout="@layout/activity_memory_tools"/>
+</navigation>

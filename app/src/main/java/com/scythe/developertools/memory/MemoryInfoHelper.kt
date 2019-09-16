@@ -30,7 +30,7 @@ class MemoryInfoHelper(val context : Context) {
         update()
     }
 
-    public fun update() {
+    fun update() {
         activityManager.getMemoryInfo(memoryInfo)
     }
 
@@ -46,7 +46,7 @@ class MemoryInfoHelper(val context : Context) {
         return memoryInfo.threshold.MB
     }
 
-    fun getRamSize() : Float {
+    private fun getRamSize() : Float {
         return memoryInfo.totalMem.MB
     }
 
