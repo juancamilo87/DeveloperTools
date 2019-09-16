@@ -19,9 +19,9 @@ class MemoryFillingHelperService : Service() {
 
     private val messenger = Messenger(HelperHandler())
 
-    inner class HelperHandler : Handler() {
-        override fun handleMessage(msg: Message?) {
-            when(msg?.what) {
+    private class HelperHandler : Handler() {
+        override fun handleMessage(msg: Message) {
+            when(msg.what) {
                 MSG_CHECK_STATIC_VARIABLE -> {
                     msg.replyTo.send(Message.obtain(null,
                             MemoryFillingActivity.SEND_STATIC_VARIABLE, test, 0))

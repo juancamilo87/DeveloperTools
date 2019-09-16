@@ -1,11 +1,13 @@
 package com.scythe.developertools.display
 
 import android.content.*
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.scythe.developertools.R
 import kotlinx.android.synthetic.main.activity_display_tools.*
 import android.view.View
+import com.scythe.developertools.setupToolbar
+import kotlinx.android.synthetic.main.toolbar.*
 
 class DisplayToolsActivity : AppCompatActivity() {
 
@@ -23,6 +25,8 @@ class DisplayToolsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_tools)
+        setupToolbar(getString(R.string.display_feature_lock))
+        toolbar_title.transitionName = "lock_screen_title"
         initDefaults()
         screen_always_on_toggle.setOnCheckedChangeListener { _, isOn ->
             if (isOn) {
@@ -70,7 +74,7 @@ class DisplayToolsActivity : AppCompatActivity() {
 
     private fun notifyScreenAlwaysOnServiceOfConfigurationChange() {
         saveSettingsToSharedPreferences()
-        sendBroadcast(Intent(DisplayToolsActivity.ACTION_SCREEN_ALWAYS_ON_CONFIGURATION_CHANGE))
+        sendBroadcast(Intent(ACTION_SCREEN_ALWAYS_ON_CONFIGURATION_CHANGE))
     }
 
     private fun saveSettingsToSharedPreferences() {
@@ -99,5 +103,10 @@ class DisplayToolsActivity : AppCompatActivity() {
                     p1?.getBooleanExtra(STOP_WHEN_BATTERY_LOW, false) ?: false,
                     p1?.getBooleanExtra(ScreenAlwaysOnService.PAUSED, false) ?: false)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

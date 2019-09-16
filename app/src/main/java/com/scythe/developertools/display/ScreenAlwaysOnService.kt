@@ -1,5 +1,6 @@
 package com.scythe.developertools.display
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
 import android.graphics.drawable.Icon
@@ -24,11 +25,10 @@ class ScreenAlwaysOnService : Service() {
         const val RUNNING : String = "SCREEN_ALWAYS_ON_SERVICE_RUNNING"
         const val ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE : String =
                 "ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE"
+        private const val CHANNEL_ID : String = "alwaysOn.Notifications"
     }
 
     private val notificationId : Int = 204
-
-    private val CHANNEL_ID : String = "alwaysOn.Notifications"
 
     private lateinit var wakeLock : PowerManager.WakeLock
 
@@ -263,15 +263,16 @@ class ScreenAlwaysOnService : Service() {
     }
 
     private fun startService() {
-        val pm = getSystemService(PowerManager::class.java)
-        wakeLock = if (allowDimming) {
-            pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, ":screenalwayson")
-        } else {
-            pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, ":screenalwayson")
+        getSystemService(PowerManager::class.java)?.let { pm ->
+            wakeLock = if (allowDimming) {
+                pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, ":screen_always_on")
+            } else {
+                pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, ":screen_always_on")
+            }
+            acquireWakelock()
+            makeServiceForeground()
+            notifyOfChanges()
         }
-        acquireWakelock()
-        makeServiceForeground()
-        notifyOfChanges()
     }
 
     private fun postStartService() {
@@ -293,14 +294,15 @@ class ScreenAlwaysOnService : Service() {
 
     private fun checkBattery() {
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        val batteryStatus = registerReceiver(null, filter)
-        val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-        val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+        registerReceiver(null, filter)?.let { batteryStatus ->
+            val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
 
-        (level / scale.toFloat() * 100).let {
-            when {
-                it <= 15 -> batteryStateLow()
-                it >= 20 -> batteryStateOkay()
+            (level / scale.toFloat() * 100).let {
+                when {
+                    it <= 15 -> batteryStateLow()
+                    it >= 20 -> batteryStateOkay()
+                }
             }
         }
     }
@@ -327,6 +329,7 @@ class ScreenAlwaysOnService : Service() {
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
     }
 
+    @SuppressLint("WakelockTimeout")
     private fun acquireWakelock() {
         wakeLock.acquire()
         val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
@@ -350,7 +353,7 @@ class ScreenAlwaysOnService : Service() {
     }
 
     //TODO Move this code to a generic place
-    fun createNotificationChannels() {
+    private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library

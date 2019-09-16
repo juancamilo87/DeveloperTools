@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.scythe.developertools.display.DisplayToolsActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <include layout="@layout/toolbar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:padding="8dp"
         android:background="@drawable/rounded_rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,12 +67,12 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3"
             tools:text="5" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/concurrent_services_barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="concurrent_services_label, concurrent_services" />
+            app:constraint_referenced_ids="concurrent_services_label,concurrent_services" />
 
         <TextView
             android:id="@+id/free_memory_label"
@@ -98,12 +99,12 @@
             app:layout_constraintTop_toBottomOf="@+id/concurrent_services_barrier"
             tools:text="1500 MB" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/free_memory_barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="free_memory_label, free_memory" />
+            app:constraint_referenced_ids="free_memory_label,free_memory" />
 
         <TextView
             android:id="@+id/free_memory_percentage_label"
@@ -130,12 +131,12 @@
             app:layout_constraintTop_toBottomOf="@+id/free_memory_barrier"
             tools:text="30%" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/free_memory_percentage_barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="free_memory_percentage_label, free_memory_percentage" />
+            app:constraint_referenced_ids="free_memory_percentage_label,free_memory_percentage" />
 
         <TextView
             android:id="@+id/memory_low"
@@ -208,6 +209,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/successful_result" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

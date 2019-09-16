@@ -7,10 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.scythe.developertools.R
+import com.scythe.developertools.setupToolbar
 import kotlinx.android.synthetic.main.activity_memory_tools_running.*
 
 open class MemoryFillingActivity : AppCompatActivity() {
@@ -28,11 +29,12 @@ open class MemoryFillingActivity : AppCompatActivity() {
     private var update = false
     private var finished = false
 
-    private var services = mutableMapOf<Class<out Service>, Triple<Boolean, ServiceConnection?, Messenger?>>()
+    private var services = mutableMapOf<Class<out Service>, Triple<Boolean, ServiceConnection, Messenger?>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memory_tools_running)
+        setupToolbar(getString(R.string.memory_feature_fill))
         setupServicesMap()
         stop_filling_memory_button.setOnClickListener{
             stop_filling_memory_button.isEnabled = false
@@ -183,8 +185,8 @@ open class MemoryFillingActivity : AppCompatActivity() {
             memoryInfoHelper = MemoryInfoHelper(applicationContext)
         }
         memoryInfoHelper.update()
-        free_memory.text = "${memoryInfoHelper.getAvailableMemory()} MB"
-        free_memory_percentage.text = "${memoryInfoHelper.getFreeMemoryPercentage()} %"
+        free_memory.text = getString(R.string.megabytes, memoryInfoHelper.getAvailableMemory())
+        free_memory_percentage.text = getString(R.string.percentage, memoryInfoHelper.getFreeMemoryPercentage())
         memory_low.visibility = if (memoryInfoHelper.isMemoryLow()) {
             View.VISIBLE
         } else {
@@ -247,8 +249,8 @@ open class MemoryFillingActivity : AppCompatActivity() {
     private val incomingMessenger = Messenger(IncomingHandler())
 
     inner class IncomingHandler : Handler() {
-        override fun handleMessage(msg: Message?) {
-            when(msg?.what) {
+        override fun handleMessage(msg: Message) {
+            when(msg.what) {
                 SEND_STATIC_VARIABLE -> {
                     if (msg.arg1 != 5) {
                         //Successfully cleared value

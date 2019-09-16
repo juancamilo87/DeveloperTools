@@ -13,8 +13,8 @@ import com.scythe.developertools.R
 class ScreenAlwaysOnQSTileService: TileService() {
 
 
-    override fun onBind(intent: Intent?): IBinder {
-        TileService.requestListeningState(this,
+    override fun onBind(intent: Intent?): IBinder? {
+        requestListeningState(this,
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
         return super.onBind(intent)
     }
