@@ -69,6 +69,7 @@ sealed class MemoryFillingService : Service() {
     }
 
     private var running = false
+    //TODO: Fix memory leak to use weak reference
     private val messenger = Messenger(IncomingHandler(this))
     private val allocations = ArrayList<ByteArray>()
 
@@ -85,7 +86,7 @@ sealed class MemoryFillingService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val msg = serviceHandler.obtainMessage()
         serviceHandler.sendMessage(msg)
-        return Service.START_NOT_STICKY
+        return START_NOT_STICKY
     }
 
     class MemoryFillingService1 : MemoryFillingService()

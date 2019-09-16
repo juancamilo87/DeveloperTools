@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">Developer tools</string>
 
+    <string name="menu_display">Display</string>
+    <string name="menu_memory">Memory</string>
+    <string name="menu_deep_links">Deep links</string>
+
     <!-- START -> DISPLAY TOOLS -->
-    <string name="display_tools_button">Display tools</string>
     <string name="display_tools_notification_title">Display tools</string>
+    <string name="display_feature_lock">Lock Screen</string>
+    <string name="display_feature_lock_description">It allows for the screen to be locked to always on, with some additional functionality to allow dimming or ignore when battery is low.</string>
 
     <!-- START -> SCREEN ALWAYS ON -->
     <string name="screen_always_on">Screen always on</string>
@@ -31,8 +36,8 @@
     <!-- END -> DISPLAY TOOLS -->
 
     <!-- START -> MEMORY TOOLS -->
-    <string name="memory_tools_button">Memory tools</string>
-    <string name="memory_tools_notification_title">Memory tools</string>
+    <string name="memory_feature_fill">Zombie Apps test</string>
+    <string name="memory_feature_fill_description">This test fills the device memory to force the system to kill all other processes. It is very useful when trying to test if the app recovers after being killed in the background a.k.a. zombie apps.</string>
     <!-- START -> FILL MEMORY -->
     <string name="fill_memory">Fill memory</string>
     <string name="fill_memory_description">This can be used to test your app when the system kills it in the background.</string>
@@ -51,4 +56,7 @@
 
     <string name="on_going_channel_name">Permanent notifications</string>
     <string name="on_going_channel_description">This notifications stay until manually removed</string>
+
+    <string name="megabytes">%1$f MB</string>
+    <string name="percentage">%1$f %%</string>
 </resources>

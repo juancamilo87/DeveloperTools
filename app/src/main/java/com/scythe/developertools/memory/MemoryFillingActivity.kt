@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.scythe.developertools.R
+import com.scythe.developertools.setupToolbar
 import kotlinx.android.synthetic.main.activity_memory_tools_running.*
 
 open class MemoryFillingActivity : AppCompatActivity() {
@@ -33,6 +34,7 @@ open class MemoryFillingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memory_tools_running)
+        setupToolbar(getString(R.string.memory_feature_fill))
         setupServicesMap()
         stop_filling_memory_button.setOnClickListener{
             stop_filling_memory_button.isEnabled = false
@@ -183,8 +185,8 @@ open class MemoryFillingActivity : AppCompatActivity() {
             memoryInfoHelper = MemoryInfoHelper(applicationContext)
         }
         memoryInfoHelper.update()
-        free_memory.text = "${memoryInfoHelper.getAvailableMemory()} MB"
-        free_memory_percentage.text = "${memoryInfoHelper.getFreeMemoryPercentage()} %"
+        free_memory.text = getString(R.string.megabytes, memoryInfoHelper.getAvailableMemory())
+        free_memory_percentage.text = getString(R.string.percentage, memoryInfoHelper.getFreeMemoryPercentage())
         memory_low.visibility = if (memoryInfoHelper.isMemoryLow()) {
             View.VISIBLE
         } else {

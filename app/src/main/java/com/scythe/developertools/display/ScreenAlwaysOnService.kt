@@ -1,5 +1,6 @@
 package com.scythe.developertools.display
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
 import android.graphics.drawable.Icon
@@ -24,11 +25,10 @@ class ScreenAlwaysOnService : Service() {
         const val RUNNING : String = "SCREEN_ALWAYS_ON_SERVICE_RUNNING"
         const val ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE : String =
                 "ACTION_SCREEN_ALWAYS_ON_SERVICE_CONFIGURATION_CHANGE"
+        private const val CHANNEL_ID : String = "alwaysOn.Notifications"
     }
 
     private val notificationId : Int = 204
-
-    private val CHANNEL_ID : String = "alwaysOn.Notifications"
 
     private lateinit var wakeLock : PowerManager.WakeLock
 
@@ -265,9 +265,9 @@ class ScreenAlwaysOnService : Service() {
     private fun startService() {
         getSystemService(PowerManager::class.java)?.let { pm ->
             wakeLock = if (allowDimming) {
-                pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, ":screenalwayson")
+                pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, ":screen_always_on")
             } else {
-                pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, ":screenalwayson")
+                pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, ":screen_always_on")
             }
             acquireWakelock()
             makeServiceForeground()
@@ -329,6 +329,7 @@ class ScreenAlwaysOnService : Service() {
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
     }
 
+    @SuppressLint("WakelockTimeout")
     private fun acquireWakelock() {
         wakeLock.acquire()
         val screenOnPrefs = getSharedPreferences(DisplayToolsActivity.SCREEN_ON_PREFERENCES, Context.MODE_PRIVATE)
@@ -352,7 +353,7 @@ class ScreenAlwaysOnService : Service() {
     }
 
     //TODO Move this code to a generic place
-    fun createNotificationChannels() {
+    private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library

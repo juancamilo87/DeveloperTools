@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/displayNavFragment"
-        android:title="Display"
-        android:icon="@android:drawable/ic_lock_idle_low_battery" />
+        android:title="@string/menu_display"
+        android:icon="@drawable/ic_phone_android_black_24dp" />
     <item android:id="@+id/memoryNavFragment"
-        android:title="Memory"
-        android:icon="@android:drawable/ic_menu_agenda" />
+        android:title="@string/menu_memory"
+        android:icon="@drawable/ic_memory_black_24dp" />
     <item android:id="@+id/action_deep_links"
-        android:title="Deep links"
-        android:icon="@android:drawable/ic_dialog_email"
+        android:title="@string/menu_deep_links"
+        android:icon="@drawable/ic_link_black_24dp"
         android:enabled="false"/>
 </menu>
