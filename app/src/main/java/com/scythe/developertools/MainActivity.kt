@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupToolbar("Developer Tools")
+        setupToolbar(getString(R.string.app_name), baseView = true)
         val navController = findNavController(R.id.nav_fragment)
         navigation_bar.setupWithNavController(navController)
     }

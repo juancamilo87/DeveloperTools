@@ -8,9 +8,9 @@ import kotlinx.android.synthetic.main.toolbar.*
  */
 infix fun Int.with(x: Int) = this.or(x)
 
-fun AppCompatActivity.setupToolbar(title: String) {
+fun AppCompatActivity.setupToolbar(title: String, baseView: Boolean = false) {
     this.setSupportActionBar(toolbar)
     this.supportActionBar?.setDisplayShowTitleEnabled(false)
-    this.supportActionBar?.setDisplayHomeAsUpEnabled(!this.isTaskRoot)
+    this.supportActionBar?.setDisplayHomeAsUpEnabled(!baseView)
     toolbar_title.text = title
 }
