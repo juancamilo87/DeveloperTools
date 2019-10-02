@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#63B5E9</color>
     <color name="colorPrimaryDark">#2D5269</color>
-    <color name="colorAccent">#5CF5DE</color>
+    <color name="colorAccent">#0CAE9D</color>
     <color name="colorError">#ff0000</color>
     <color name="colorWarningError">#a73b3b</color>
     <color name="borders">#3d3d3d</color>
+    <color name="notification_accent">@color/colorAccent</color>
 </resources>
