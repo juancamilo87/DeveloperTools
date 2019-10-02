@@ -12,10 +12,16 @@ import com.scythe.developertools.R
  */
 class ScreenAlwaysOnQSTileService: TileService() {
 
+    companion object {
+        const val ACTION_UPDATE_TILE = "com.scythe.developertools.display.ACTION.UPDATE_TILE"
+    }
+
+    private val receiver = UpdateTileReceiver()
 
     override fun onBind(intent: Intent?): IBinder? {
-        requestListeningState(this,
+        requestListeningState(applicationContext,
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
+        sendBroadcast(Intent(ACTION_UPDATE_TILE))
         return super.onBind(intent)
     }
 
@@ -40,8 +46,14 @@ class ScreenAlwaysOnQSTileService: TileService() {
     }
 
     override fun onStartListening() {
+        registerReceiver(receiver, IntentFilter(ACTION_UPDATE_TILE))
         super.onStartListening()
         updateTile()
+    }
+
+    override fun onStopListening() {
+        unregisterReceiver(receiver)
+        super.onStopListening()
     }
 
     private fun updateTile() {
@@ -65,5 +77,11 @@ class ScreenAlwaysOnQSTileService: TileService() {
         qsTile.state = Tile.STATE_INACTIVE
         qsTile.label = getString(R.string.display_screen_always_on_tile_label_off)
         qsTile.icon = Icon.createWithResource(this, R.drawable.ic_android_bulb_off)
+    }
+
+    inner class UpdateTileReceiver: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateTile()
+        }
     }
 }
