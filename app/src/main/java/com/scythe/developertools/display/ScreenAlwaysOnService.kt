@@ -318,15 +318,16 @@ class ScreenAlwaysOnService : Service() {
 
     private fun startRunning() {
         running = true
-        TileService.requestListeningState(this,
+        TileService.requestListeningState(applicationContext,
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
-//        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
+        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
     }
 
     private fun stopRunning() {
         running = false
-        TileService.requestListeningState(this,
+        TileService.requestListeningState(applicationContext,
                 ComponentName(this, ScreenAlwaysOnQSTileService::class.java))
+        sendBroadcast(Intent(ScreenAlwaysOnQSTileService.ACTION_UPDATE_TILE))
     }
 
     @SuppressLint("WakelockTimeout")
