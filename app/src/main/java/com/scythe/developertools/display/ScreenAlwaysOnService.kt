@@ -202,6 +202,7 @@ class ScreenAlwaysOnService : Service() {
                         .addLine(batterySaverText)
                         .setBigContentTitle(title)
                         .setSummaryText(getString(R.string.screen_always_on)))
+                .setColor(getColor(R.color.notification_accent))
                 .build()
 
         startForeground(notificationId, notification)
@@ -365,8 +366,9 @@ class ScreenAlwaysOnService : Service() {
             channel.description = description
             // Register the channel with the system
 
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
+            getSystemService(NotificationManager::class.java)?.apply {
+                createNotificationChannel(channel)
+            }
         }
     }
 
