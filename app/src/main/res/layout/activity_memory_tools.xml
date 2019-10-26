@@ -2,11 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:transitionName="zombie_apps_card"
+    android:transitionGroup="false"
+    android:background="@color/card_background"
+    android:elevation="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.scythe.developertools.display.DisplayToolsActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/fullscreen_dialog_toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

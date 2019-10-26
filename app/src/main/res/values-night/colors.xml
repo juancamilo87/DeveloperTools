@@ -7,4 +7,5 @@
     <color name="colorWarningError">#a73b3b</color>
     <color name="borders">#3d3d3d</color>
     <color name="notification_accent">@color/colorAccent</color>
+    <color name="card_background">@color/colorPrimaryDark</color>
 </resources>

@@ -7,4 +7,6 @@
     <color name="colorWarningError">#a73b3b</color>
     <color name="borders">#3d3d3d</color>
     <color name="notification_accent">@color/colorAccent</color>
+    <!-- TODO: Define a better color name and a better color in general for the card's background and it's associated views -->
+    <color name="card_background">@color/colorAccent</color>
 </resources>

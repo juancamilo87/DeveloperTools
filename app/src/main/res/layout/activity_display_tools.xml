@@ -4,9 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.scythe.developertools.display.DisplayToolsActivity">
+    tools:context="com.scythe.developertools.display.DisplayToolsActivity"
+    android:background="@color/card_background"
+    android:transitionName="lock_screen_card"
+    android:transitionGroup="false"
+    android:elevation="10dp">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/fullscreen_dialog_toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

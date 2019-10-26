@@ -10,9 +10,7 @@
         tools:layout="@layout/fragment_display" >
         <action
             android:id="@+id/action_displayNavFragment_to_displayToolsActivity"
-            app:destination="@id/displayToolsActivity"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:destination="@id/displayToolsActivity" />
     </fragment>
     <activity
         android:id="@+id/displayToolsActivity"
@@ -26,9 +24,7 @@
         tools:layout="@layout/fragment_memory" >
         <action
             android:id="@+id/action_memoryNavFragment_to_memoryToolsActivity"
-            app:destination="@id/memoryToolsActivity"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:destination="@id/memoryToolsActivity" />
     </fragment>
     <activity
         android:id="@+id/memoryToolsActivity"
