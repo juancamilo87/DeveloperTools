@@ -10,6 +10,7 @@ import androidx.navigation.ActivityNavigatorExtras
 import androidx.navigation.findNavController
 import com.scythe.developertools.R
 import kotlinx.android.synthetic.main.fragment_memory.*
+import androidx.core.util.Pair as UtilPair
 
 class MemoryNavFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -20,10 +21,13 @@ class MemoryNavFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         zombie_apps_card.setOnClickListener {
             activity?.let { parent ->
-                val extras = ActivityNavigatorExtras(
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(parent,
-                                card_header,
-                                card_header.transitionName))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        parent,
+                        UtilPair.create<View, String>(card_header, card_header.transitionName), // Transition for card title
+                        UtilPair.create<View, String>(zombie_apps_card, zombie_apps_card.transitionName)) // Transition for card background
+
+                val extras = ActivityNavigatorExtras(options)
+
                 it.findNavController()
                         .navigate(R.id.action_memoryNavFragment_to_memoryToolsActivity,
                                 null,
