@@ -12,40 +12,38 @@
 
     <include layout="@layout/fullscreen_dialog_toolbar" />
 
+    <Switch
+        android:id="@+id/screen_always_on_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:saveEnabled="false"
+        android:elevation="10dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?android:attr/actionBarSize"
         android:padding="8dp"
-        android:background="@drawable/rounded_rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/screen_always_on"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:layout_marginEnd="8dp"
+            android:text="@string/screen_always_on_description"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ToggleButton
-            android:id="@+id/screen_always_on_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/battery_switch"
-            android:saveEnabled="false" />
 
         <Switch
             android:id="@+id/allow_dimming_switch"
@@ -57,7 +55,7 @@
             android:text="@string/screen_always_on_allow_dimming"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/description"
             android:saveEnabled="false" />
 
         <Switch
@@ -81,7 +79,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/colorWarningError"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/screen_always_on_toggle"
+            tools:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/battery_switch"
             tools:text="@string/screen_always_on_paused_battery_low" />

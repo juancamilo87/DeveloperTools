@@ -9,11 +9,14 @@ import kotlinx.android.synthetic.main.toolbar.*
 infix fun Int.with(x: Int) = this.or(x)
 
 fun AppCompatActivity.setupToolbar(title: String? = null, baseView: Boolean = false,
-                                   backgroundColor: Int? = null) {
+                                   backgroundColor: Int? = null,
+                                   backDrawableResId: Int? = null) {
     this.setSupportActionBar(toolbar)
     this.supportActionBar?.setDisplayShowTitleEnabled(false)
     this.supportActionBar?.setDisplayHomeAsUpEnabled(!baseView)
-    this.supportActionBar?.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel)
+    if (backDrawableResId != null) {
+        this.supportActionBar?.setHomeAsUpIndicator(backDrawableResId)
+    }
     title?.let {
         toolbar_title.text = it
     }

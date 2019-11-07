@@ -29,7 +29,8 @@ class DisplayToolsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_tools)
         setupToolbar(title = getString(R.string.display_feature_lock),
-                backgroundColor = getColor(R.color.card_background))
+                backgroundColor = getColor(R.color.card_background),
+                backDrawableResId = android.R.drawable.ic_menu_close_clear_cancel)
         toolbar_title.transitionName = "lock_screen_title"
         initDefaults()
         screen_always_on_toggle.setOnCheckedChangeListener { _, isOn ->
