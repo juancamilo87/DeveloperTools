@@ -12,6 +12,7 @@
 
     <!-- START -> SCREEN ALWAYS ON -->
     <string name="screen_always_on">Screen always on</string>
+    <string name="screen_always_on_description">This avoids the screen from turning off. It shows a notification from which the feature can be switched off. Also a quick tile is available to switch on or off the feature.\n\nThe available settings are allow dimming to save some battery life when idle, and disable on battery low to avoid the device from turning off due to no battery.</string>
     <string name="screen_always_on_allow_dimming">Allow dimming</string>
     <string name="screen_always_on_stop_when_low_battery">Stop when low battery</string>
     <string name="screen_always_on_paused_battery_low">Screen always on paused due to low battery</string>
@@ -37,7 +38,7 @@
 
     <!-- START -> MEMORY TOOLS -->
     <string name="memory_feature_fill">Zombie Apps test</string>
-    <string name="memory_feature_fill_description">This test fills the device memory to force the system to kill all other processes. It is very useful when trying to test if the app recovers after being killed in the background a.k.a. zombie apps.</string>
+    <string name="memory_feature_fill_description">This tool fills the device memory to force the system to kill all other processes. It is very useful when trying to test if the app recovers after being killed in the background a.k.a. zombie apps.</string>
     <!-- START -> FILL MEMORY -->
     <string name="fill_memory">Fill memory</string>
     <string name="fill_memory_description">This can be used to test your app when the system kills it in the background.</string>

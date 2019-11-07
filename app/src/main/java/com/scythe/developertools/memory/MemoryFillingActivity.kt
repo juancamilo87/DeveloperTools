@@ -7,12 +7,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
-import androidx.appcompat.app.AppCompatActivity
+import android.transition.Fade
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.scythe.developertools.R
 import com.scythe.developertools.setupToolbar
 import kotlinx.android.synthetic.main.activity_memory_tools_running.*
+import kotlinx.android.synthetic.main.fullscreen_dialog_toolbar.*
 
 open class MemoryFillingActivity : AppCompatActivity() {
 
@@ -33,8 +35,11 @@ open class MemoryFillingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        configureAnimations()
         setContentView(R.layout.activity_memory_tools_running)
-        setupToolbar(getString(R.string.memory_feature_fill))
+        setupToolbar(title = getString(R.string.memory_feature_fill),
+                backgroundColor = getColor(R.color.card_background))
+        toolbar.transitionName = "toolbar"
         setupServicesMap()
         stop_filling_memory_button.setOnClickListener{
             stop_filling_memory_button.isEnabled = false
@@ -47,6 +52,12 @@ open class MemoryFillingActivity : AppCompatActivity() {
             stopMemoryFilling()
         }
         startAndBindServices()
+    }
+
+    private fun configureAnimations() {
+        with(window) {
+            enterTransition = Fade()
+        }
     }
 
     private fun setupServicesMap() {
@@ -244,6 +255,11 @@ open class MemoryFillingActivity : AppCompatActivity() {
         helperServiceMessenger = null
         unbindService(helperServiceConnection)
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private val incomingMessenger = Messenger(IncomingHandler())

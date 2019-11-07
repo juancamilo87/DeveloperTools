@@ -1,12 +1,15 @@
 package com.scythe.developertools.display
 
-import android.content.*
-import androidx.appcompat.app.AppCompatActivity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import com.scythe.developertools.R
-import kotlinx.android.synthetic.main.activity_display_tools.*
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.scythe.developertools.R
 import com.scythe.developertools.setupToolbar
+import kotlinx.android.synthetic.main.activity_display_tools.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class DisplayToolsActivity : AppCompatActivity() {
@@ -25,7 +28,9 @@ class DisplayToolsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_tools)
-        setupToolbar(getString(R.string.display_feature_lock))
+        setupToolbar(title = getString(R.string.display_feature_lock),
+                backgroundColor = getColor(R.color.card_background),
+                backDrawableResId = android.R.drawable.ic_menu_close_clear_cancel)
         toolbar_title.transitionName = "lock_screen_title"
         initDefaults()
         screen_always_on_toggle.setOnCheckedChangeListener { _, isOn ->
