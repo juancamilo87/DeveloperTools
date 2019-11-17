@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#63B5E9</color>
-    <color name="colorPrimaryDark">#2D5269</color>
-    <color name="colorAccent">#0CAE9D</color>
+    <!-- Palette: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=54c7c0&secondary.color=ed4077 -->
+    <color name="primaryColor">#54c7c0</color>
+    <color name="primaryLightColor">#8afaf3</color>
+    <color name="primaryDarkColor">#069690</color>
+    <color name="secondaryColor">#ec407a</color>
+    <color name="secondaryLightColor">#ff77a9</color>
+    <color name="secondaryDarkColor">#b4004e</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+
+    <color name="bottom_navigation_active">@color/primaryDarkColor</color>
+
     <color name="colorError">#ff0000</color>
     <color name="colorWarningError">#a73b3b</color>
     <color name="borders">#3d3d3d</color>
-    <color name="notification_accent">@color/colorAccent</color>
-    <!-- TODO: Define a better color name and a better color in general for the card's background and it's associated views -->
-    <color name="card_background">@color/colorAccent</color>
+    <color name="notification_accent">@color/secondaryColor</color>
+    <color name="elevation_2dp_color">#12FFFFFF</color>
 </resources>

@@ -38,7 +38,7 @@ open class MemoryFillingActivity : AppCompatActivity() {
         configureAnimations()
         setContentView(R.layout.activity_memory_tools_running)
         setupToolbar(title = getString(R.string.memory_feature_fill),
-                backgroundColor = getColor(R.color.card_background))
+                backgroundColor = getColor(android.R.color.transparent))
         toolbar.transitionName = "toolbar"
         setupServicesMap()
         stop_filling_memory_button.setOnClickListener{

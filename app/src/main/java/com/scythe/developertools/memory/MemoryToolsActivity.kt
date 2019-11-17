@@ -21,7 +21,7 @@ class MemoryToolsActivity : AppCompatActivity() {
         //TODO: Fix strings organization
         setContentView(R.layout.activity_memory_tools)
         setupToolbar(title = getString(R.string.memory_feature_fill),
-                backgroundColor = getColor(R.color.card_background),
+                backgroundColor = getColor(android.R.color.transparent),
                 backDrawableResId = android.R.drawable.ic_menu_close_clear_cancel)
         toolbar_title.transitionName = "zombie_app_title"
         start_filling_memory_button.text = getString(R.string.start_filling_memory)

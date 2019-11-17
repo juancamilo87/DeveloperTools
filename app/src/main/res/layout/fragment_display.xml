@@ -15,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardBackgroundColor="@color/card_background"
         android:transitionName="lock_screen_card"
         android:transitionGroup="false"
         android:minHeight="200dp"
