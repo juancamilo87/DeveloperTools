@@ -12,7 +12,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="@color/card_background"
         android:transitionName="zombie_apps_card"
         android:transitionGroup="false"
         app:layout_constraintStart_toStartOf="parent"

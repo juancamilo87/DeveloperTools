@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:transitionName="zombie_apps_card"
     android:transitionGroup="false"
-    android:background="@color/card_background"
-    android:elevation="10dp"
+    android:background="@color/elevation_2dp_color"
+    android:elevation="2dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.scythe.developertools.display.DisplayToolsActivity">

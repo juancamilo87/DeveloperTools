@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#63B5E9</color>
-    <color name="colorPrimaryDark">#2D5269</color>
-    <color name="colorAccent">#5CF5DE</color>
-    <color name="colorError">#ff0000</color>
-    <color name="colorWarningError">#a73b3b</color>
-    <color name="borders">#3d3d3d</color>
-    <color name="notification_accent">@color/colorAccent</color>
-    <color name="card_background">@color/colorPrimaryDark</color>
+    <!-- Palette: https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=2a6662&secondary.color=cc2a62 -->
+    <color name="primaryColor">#2a6662</color>
+    <color name="primaryLightColor">#59948f</color>
+    <color name="primaryDarkColor">#003b38</color>
+    <color name="secondaryColor">#cc2a62</color>
+    <color name="secondaryLightColor">#ff628f</color>
+    <color name="secondaryDarkColor">#950038</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="bottom_navigation_active">@color/primaryLightColor</color>
 </resources>
